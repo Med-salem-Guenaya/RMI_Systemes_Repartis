@@ -21,19 +21,19 @@ public class Server implements MatrixMultiplication {
 
             // Divide the rows of matrixA between the compute servers
             int numRows = matrixA.length;
-            int rowsPerServer = numRows / numServers;
-
+            int rowsPerServer = numRows / numServers; // base rows per worker
+            int remainder = numRows % numServers; // remainder rows to be distributed
 
             int[][] partialResults = new int[matrixA.length][matrixB[0].length];
 
             // Assign the matrix multiplication work to each server
+            int currentRow = 0;
             for (int i = 0; i < numServers; i++) {
-                int startRow = i * rowsPerServer;
-                int endRow = (i + 1) * rowsPerServer;
+                // Calculate start and end row for each worker
+                int startRow = currentRow;
+                int endRow = startRow + rowsPerServer + (i < remainder ? 1 : 0); // Add extra row if within remainder
 
-                if (i == numServers - 1) {
-                    endRow = numRows; // Ensure the last server gets the remaining rows
-                }
+                currentRow = endRow; // Update the current row position for the next worker
 
                 // Call the compute server to handle partial matrix multiplication
                 int[][] resultPart = computeServers[i].multiplyPartial(matrixA, matrixB, startRow, endRow);
@@ -50,7 +50,6 @@ public class Server implements MatrixMultiplication {
             return null;
         }
     }
-
     public static void main(String[] args) {
         try {
             // Create the Server and register it with the RMI registry

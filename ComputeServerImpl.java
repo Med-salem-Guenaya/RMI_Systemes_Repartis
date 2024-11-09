@@ -17,7 +17,7 @@ public class ComputeServerImpl implements ComputeServer {
         int[][] result = new int[endRow - startRow][numColsB];
 
         // Print details about the partial work each server will perform
-        System.out.println("Worker " + Thread.currentThread().getName() + " starting multiplication from row " + startRow + " to row " + endRow);
+        System.out.println("Worker " + Thread.currentThread().getName() + " starting multiplication from row " + startRow + " to row " + (endRow - 1));
 
         //
         for (int i = startRow; i < endRow; i++) {
