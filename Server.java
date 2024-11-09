@@ -22,7 +22,7 @@ public class Server implements MatrixMultiplication {
             // Divide the rows of matrixA between the compute servers
             int numRows = matrixA.length;
             int rowsPerServer = numRows / numServers;
-            int remainingRows = numRows % numServers;
+
 
             int[][] partialResults = new int[matrixA.length][matrixB[0].length];
 
