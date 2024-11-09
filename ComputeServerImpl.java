@@ -31,7 +31,7 @@ public class ComputeServerImpl implements ComputeServer {
             ComputeServer stub = (ComputeServer) UnicastRemoteObject.exportObject(obj, 0);
 
             int serverId = Integer.parseInt(args[0]); // Chaque serveur a un ID unique entre 0 et 4
-            Registry registry = LocateRegistry.createRegistry(1099 + serverId);
+            Registry registry = LocateRegistry.createRegistry(1100 + serverId);
             registry.bind("ComputeServer" + serverId, stub);
 
             System.out.println("ComputeServer" + serverId + " ready");

@@ -37,7 +37,7 @@ public class Server implements MatrixMultiplication {
         try {
             ComputeServer[] computeServers = new ComputeServer[5];
             for (int i = 0; i < 5; i++) {
-                computeServers[i] = (ComputeServer) LocateRegistry.getRegistry("localhost", 1099 + i).lookup("ComputeServer" + i);
+                computeServers[i] = (ComputeServer) LocateRegistry.getRegistry("localhost", 1100 + i).lookup("ComputeServer" + i);
             }
 
             Server obj = new Server(computeServers);
