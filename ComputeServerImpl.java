@@ -19,16 +19,15 @@ public class ComputeServerImpl implements ComputeServer {
         // Print details about the partial work each server will perform
         System.out.println("Worker " + Thread.currentThread().getName() + " starting multiplication from row " + startRow + " to row " + (endRow - 1));
 
-        //
+        // itterates over the rows of matrix A
         for (int i = startRow; i < endRow; i++) {
             System.out.println("Processing row " + i + " of matrixA: " + arrayToString(matrixA[i]));
-            //
+            // iterates over the columns of matrixB
             for (int j = 0; j < numColsB; j++) {
-                //
                 result[i - startRow][j] = 0;
                 System.out.print("Multiplying with column " + j + " of matrixB: " + arrayToString(getColumn(matrixB, j)) + " => ");
+                // iterates over """elements""" of rowsA and columnsB
                 for (int k = 0; k < matrixA[i].length; k++) {
-                    //
                     result[i - startRow][j] += matrixA[i][k] * matrixB[k][j];
                     System.out.print(matrixA[i][k] + " * " + matrixB[k][j] + " + ");
                 }

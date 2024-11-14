@@ -13,7 +13,7 @@ public class Server implements MatrixMultiplication {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             ComputeServer[] computeServers = new ComputeServer[numServers];
 
-            // Lookup each compute server from the registry
+            // Lookup each compute server(worker) from the registry
             for (int i = 0; i < numServers; i++) {
                 computeServers[i] = (ComputeServer) registry.lookup("ComputeServer" + i);
                 System.out.println("Connected to ComputeServer" + i);
@@ -23,7 +23,7 @@ public class Server implements MatrixMultiplication {
             int numRows = matrixA.length;
             int rowsPerServer = numRows / numServers; // base rows per worker
             int remainder = numRows % numServers; // remainder rows to be distributed
-
+            // here i gave it the nbr of rows of matrixA and nbr of columns of matrixB
             int[][] partialResults = new int[matrixA.length][matrixB[0].length];
 
             // Assign the matrix multiplication work to each server
@@ -35,7 +35,7 @@ public class Server implements MatrixMultiplication {
 
                 currentRow = endRow; // Update the current row position for the next worker
 
-                // Call the compute server to handle partial matrix multiplication
+                // Call the compute server(workers) to handle partial matrix multiplication
                 int[][] resultPart = computeServers[i].multiplyPartial(matrixA, matrixB, startRow, endRow);
 
                 // Collect partial results from each server
@@ -52,12 +52,13 @@ public class Server implements MatrixMultiplication {
     }
     public static void main(String[] args) {
         try {
-            // Create the Server and register it with the RMI registry
+            // here we create the RMI registery (one is more than enough)
+            Registry registry = LocateRegistry.createRegistry(1099);
+            // Create the Server (Coordinator) and register it with the RMI registry
             Server server = new Server();
             MatrixMultiplication stub = (MatrixMultiplication) UnicastRemoteObject.exportObject(server, 0);
 
             // Register the server under the name "MatrixMultiplication"
-            Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("MatrixMultiplication", stub);
 
             System.out.println("Server is ready and listening for client requests...");
